@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,14 +18,15 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware('auth')->get('/articles', function (Request $request) {
+Route::middleware('auth')->get('/events', function (Request $request) {
     /**
      * Example content.
      */
+    $id = Auth::user()->id;
     $collection = collect([
-        [ 'id' => '1', 'title' => 'Example Title 1', 'content' => 'Some Content 1'],
-        [ 'id' => '2', 'title' => 'Example Title 2', 'content' => 'Some Content 2'],
-        [ 'id' => '3', 'title' => 'Example Title 3', 'content' => 'Some Content 3']
+        [ 'eventId' => '1', 'title' => 'Example Title 1', 'day' => 'Friday','time' =>'253','duration'=>'55','location'=>'TravelStead Hall'],
+        [ 'eventId' => '2', 'title' => 'Example Title 2', 'day' => 'Saturday','time' =>'203','duration'=>'55','location'=>'TravelStead Hall'],
+        [ 'eventId' => '3', 'title' => 'Example Title 3', 'day' => 'Monday','time' =>'153','duration'=>'55','location'=>'TravelStead Hall'],
     ]);
     return $collection;
 });

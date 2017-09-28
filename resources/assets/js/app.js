@@ -8,8 +8,9 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
-Vue.use(require('vue-resource'))
-
+window.VueTimepicker = require('vue2-timepicker')
+Vue.use(require('vue-resource'));
+Vue.use(VueTimepicker);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -17,7 +18,8 @@ Vue.use(require('vue-resource'))
  */
 
 Vue.component('example', require('./components/Example.vue'));
-Vue.component('examplee', require('./components/TestComponent.vue'));
+Vue.component('shedule', require('./components/Shedule.vue'));
+Vue.component('event-item', require('./components/EventItem.vue'));
 
 
 const app = new Vue({
