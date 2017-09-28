@@ -43796,13 +43796,31 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         timeChangeHandler: function timeChangeHandler(eventData) {
             console.log(eventData);
+        },
+        postDataHandeler: function postDataHandeler() {
+            var _this = this;
+
+            var fdta = { 'title': 'bar', 'location': 'foo', 'time': '180', 'duration': '150', 'day': '3',
+                headers: {
+                    'Content-Type': 'multipart/form-data' } };
+
+            this.$http.post('/api/events', fdta).then(function (response) {
+                _this.events = response.data;
+                console.log(response.data);
+            }).catch(function (error) {
+                if (error.response) {
+                    console.log(error.response);
+                } else {
+                    console.log('Error', error.message);
+                }
+            });
         }
     },
     created: function created() {
-        var _this = this;
+        var _this2 = this;
 
         this.$http.get('api/events').then(function (response) {
-            _this.events = response.data;
+            _this2.events = response.data;
             console.log(response.data);
         }).catch(function (error) {
             if (error.response) {
@@ -43840,6 +43858,8 @@ var render = function() {
           expression: "timeValue"
         }
       }),
+      _vm._v(" "),
+      _c("button", { on: { click: _vm.postDataHandeler } }, [_vm._v("post")]),
       _vm._v(" "),
       _c("div", [
         _c(
@@ -43909,7 +43929,7 @@ var staticRenderFns = [
         },
         [
           _c("i", { staticClass: "glyphicon glyphicon-trash" }),
-          _vm._v(" Delete\n            ")
+          _vm._v(" Delete\n                ")
         ]
       )
     ])

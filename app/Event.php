@@ -10,4 +10,8 @@ class Event extends Model
         'title', 'location', 'duration','time','weekday'
     ];
     
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
 }

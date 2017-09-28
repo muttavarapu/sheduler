@@ -1,7 +1,7 @@
 <template>
     <div>
         <vue-timepicker v-model="timeValue" format="hh:mm A" @change="timeChangeHandler" hide-clear-button></vue-timepicker>
-
+<button @click="postDataHandeler">post</button>
         <div>
             <table class = "table table-hover">
                 <tr>
@@ -43,7 +43,26 @@
         methods: {
           timeChangeHandler (eventData) {
             console.log(eventData);
-          }
+          },
+        postDataHandeler () {
+           
+            var fdta = {'title': 'bar','location':'foo','time': '180','duration':'150','day': '3',
+                       headers: {
+                            'Content-Type': 'multipart/form-data'}}
+            
+            
+            this.$http.post('/api/events',fdta )
+                .then((response) => {
+                    this.events = response.data;
+                    console.log(response.data);
+                })
+                .catch((error) => {
+                    if (error.response) {
+                        console.log(error.response);
+                    } else {
+                        console.log('Error', error.message);
+                    }})    
+        }
         },
         created() {
            this.$http.get('api/events')

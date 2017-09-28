@@ -30,3 +30,12 @@ Route::middleware('auth')->get('/events', function (Request $request) {
     ]);
     return $collection;
 });
+
+Route::middleware('auth')->post('/events', function (Request $request) {
+
+    $id = Auth::user()->id;
+    $collection = collect([
+        [ 'eventId' => '1', 'title' =>$request->title, 'day' => $request->day,'time' =>$request->time,'duration'=>$request->duration,'location'=>$request->location],
+    ]);
+    return $collection;
+});
