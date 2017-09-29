@@ -2,7 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Log;
+use App\Event;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -19,23 +20,31 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::middleware('auth')->get('/events', function (Request $request) {
-    /**
-     * Example content.
-     */
     $id = Auth::user()->id;
-    $collection = collect([
-        [ 'eventId' => '1', 'title' => 'Example Title 1', 'day' => 'Friday','time' =>'253','duration'=>'55','location'=>'TravelStead Hall'],
-        [ 'eventId' => '2', 'title' => 'Example Title 2', 'day' => 'Saturday','time' =>'203','duration'=>'55','location'=>'TravelStead Hall'],
-        [ 'eventId' => '3', 'title' => 'Example Title 3', 'day' => 'Monday','time' =>'153','duration'=>'55','location'=>'TravelStead Hall'],
-    ]);
-    return $collection;
+    $events = App\Event::where('user_id', '=', $id)->latest()->get();
+    return $events;
 });
 
 Route::middleware('auth')->post('/events', function (Request $request) {
-
+    
+    $event = new Event;
+    $event->title = $request->title;
+    $event->weekday = $request->day;
+    $event->time = $request->time;
+    $event->duration = $request->duration;
+    $event->location = $request->location;
+    $event->user_id = Auth::user()->id;
+    Log::info('before save.', ['id' => $event->time]);
+    $event->save();
+        Log::info('User failed to login.', ['id' => $event->id]);
     $id = Auth::user()->id;
-    $collection = collect([
-        [ 'eventId' => '1', 'title' =>$request->title, 'day' => $request->day,'time' =>$request->time,'duration'=>$request->duration,'location'=>$request->location],
-    ]);
-    return $collection;
+    $events = App\Event::where('user_id', '=', $id)->latest()->get();
+    return $events;
+});
+Route::middleware('auth')->post('/event', function (Request $request) {
+    Log::info('User failed to login.', ['id' => $request->id]);
+    App\Event::where('id', '=', $request->id)->delete();
+    $user_id = Auth::user()->id;
+    $events = App\Event::where('user_id', '=', $user_id)->latest()->get();
+    return $events;
 });
